@@ -21,5 +21,7 @@ if __name__ == "__main__":
         "password":"vagrant"
     }
     test_instance = Test(config=config)
-    res = test_instance.ssh_client.execute_cmd("pwd")
+    res = test_instance.ssh_client.execute_cmd("ifconfig")
+    print(res)
+    res = test_instance.ssh_client.execute_cmd_container("ifconfig","network-1")
     print(res)

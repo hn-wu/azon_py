@@ -38,12 +38,20 @@ class Client:
         """
         ssh执行命令
         """
-        cmd = self.__convert_base64_cmd__(cmd=cmd)
-        stdin, stdout, stderr = self.paramiko_client.exec_command(command=cmd)
+        base64_cmd = convert_str_base64(cmd)
+        execute_cmd = "sudo echo '{}' | base64 -d | bash".format(base64_cmd)
+        stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)
         exit_status = stdout.channel.recv_exit_status()
         stdout_output = stdout.read().decode('utf-8')
         stderr_output = stderr.read().decode('utf-8')
         try:
+            if "base: command not found" in stderr_output:
+                execute_cmd = "sudo echo '{}' | base64 -d | bash".format(cmd)
+                stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)
+                exit_status = stdout.channel.recv_exit_status()
+                stdout_output = stdout.read().decode('utf-8')
+                stderr_output = stderr.read().decode('utf-8')
+
             if stderr_output or exit_status != 0:
                 raise CommandExecutionError(
                     "远程命令执行失败",
@@ -55,15 +63,35 @@ class Client:
         except CommandExecutionError as e:
             logging.error(f"命令执行出现错误: {e.message}")
 
-    def __convert_base64_cmd__(self,cmd):
+    def execute_cmd_container(self,cmd,container_id):
         """
-        将cmd转为base64格式的字符串
+        在容器内执行命令
+        docker exec -e cr={cmd} {container_id} bash -c 'echo $cr|base64 -d|base'
         """
-        if not cmd:
-            return None
         base64_cmd = convert_str_base64(cmd)
-        cmd = "echo '{}' | base64 -d | bash".format(base64_cmd)
-        return cmd
+        execute_cmd = "sudo docker exec -e cr={} {} bash -c 'echo $cr|base64 -d|base'".format(base64_cmd,container_id)
+        stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)
+        exit_status = stdout.channel.recv_exit_status()
+        stdout_output = stdout.read().decode('utf-8')
+        stderr_output = stderr.read().decode('utf-8')
+        try:
+            if "base: command not found" in stderr_output:
+                execute_cmd = "sudo docker exec -e cr={} {} bash -c '$cr'".format(cmd,container_id)
+                stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)
+                exit_status = stdout.channel.recv_exit_status()
+                stdout_output = stdout.read().decode('utf-8')
+                stderr_output = stderr.read().decode('utf-8')
+
+            if stderr_output or exit_status != 0:
+                raise CommandExecutionError(
+                    "远程命令执行失败",
+                    exit_status=exit_status,
+                    stderr_output=stderr_output
+                )
+            else:
+                return stdout_output
+        except CommandExecutionError as e:
+            logging.error(f"命令执行出现错误: {stderr_output}")
 
     def close_paramiko_client(self):
         self.paramiko_client.close()
