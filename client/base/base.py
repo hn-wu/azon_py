@@ -9,6 +9,7 @@ class Base:
             -[x]port
             -[x]username
             -[x]password
+            -[]dbname
         """
         self.config = config
     
@@ -16,3 +17,8 @@ class Base:
     def ssh_client(self):
         from client.base.ssh_cmd_client import Client as ssh_cmd_client
         return ssh_cmd_client(self.config)
+    
+    @cached_property
+    def db_client(self):
+        from client.base.db_client import Client as db_client
+        return db_client(self.config)
