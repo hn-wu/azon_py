@@ -8,5 +8,9 @@ app = Flask(__name__)
 app.register_blueprint(ssh_cmd_blueprint, url_prefix='/ssh')
 app.register_blueprint(user_config_blueprint, url_prefix='/user/config')
 
+@app.route('/', methods=['Get'])
+def test():
+    return "Test Success"
+
 if __name__ == '__main__':
     app.run(debug=True)

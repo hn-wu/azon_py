@@ -14,8 +14,9 @@ class Client(BaseClient):
         super().__init__(config)
     
     def set_ssh_config(self):
-        dbname = self.config.pop('dbname', None)
-        self.db_client.insert_db(self.config)
+        record = self.config.copy()
+        record.pop("dbname") 
+        self.db_client.insert_db(record)
         self.db_client.close_db()
 
     def get_ssh_config_by_hostname(self):

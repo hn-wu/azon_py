@@ -8,10 +8,10 @@ ssh_cmd_blueprint = Blueprint('ssh_cmd', __name__)
 def execute_cmd(): 
     """
     ssh执行命令
+    -[x]hostname
     """
     hostname = request.form.get('hostname')
-    dbname = request.form.get('dbname')
-    config = dict(hostname=hostname,dbname=dbname)
+    config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()
 
@@ -24,10 +24,10 @@ def execute_cmd():
 def execute_cmd_container():
     """
     在容器内执行命令
+    -[x]hostname
     """
     hostname = request.form.get('hostname')
-    dbname = request.form.get('dbname')
-    config = dict(hostname=hostname,dbname=dbname)
+    config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()
 
