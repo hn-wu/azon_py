@@ -20,13 +20,15 @@ class Client:
         """
         创建ssh客户端连接
         """
-        paramiko_client = paramiko.SSHClient()
-        paramiko_client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+        hostname=self.config.get("hostname",None)
+        port=self.config.get("port",None)
+        username=self.config.get("username",None)
+        password=self.config.get("password",None)
+        if hostname is None or port is None or username is None or password is None:
+            return None
         try:
-            hostname=self.config["hostname"]
-            port=self.config["port"]
-            username=self.config["username"]
-            password=self.config["password"]
+            paramiko_client = paramiko.SSHClient()
+            paramiko_client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
             paramiko_client.connect(hostname=hostname, port=port, username=username, password=password)
         except paramiko.AuthenticationException:
             logging.error("认证失败，请检查您的用户名或密码")

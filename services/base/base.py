@@ -1,6 +1,6 @@
 from client.base.base import Base as BaseClient
 
-class Client(BaseClient):
+class Base(BaseClient):
 
     def __init__(self,config):
         """
