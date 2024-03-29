@@ -1,13 +1,14 @@
 from flask import Blueprint, jsonify, request
+from services.network import Service as network_service
 from services.ssh_cmd import Service as ssh_cmd_service
 from services.user_config import Service as user_config_service
 
-ssh_cmd_blueprint = Blueprint('ssh_cmd', __name__)
+network_blueprint = Blueprint('network', __name__)
 
-@ssh_cmd_blueprint.route('/cmd', methods=['POST'])
-def execute_cmd(): 
+@network_blueprint.route('/ip/addr', methods=['POST'])
+def get_ip_addr(): 
     """
-    ssh执行命令
+    查询主机的全部网络配置：网口名、ip、掩码、mac地址、网络接口状态
     -[x]hostname
     """
     hostname = request.form.get('hostname')
@@ -15,15 +16,14 @@ def execute_cmd():
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
-    cmd = request.form.get('cmd')
-    ssh_cmd = ssh_cmd_service(ssh_config)
-    res = ssh_cmd.execute_cmd(cmd)
+    network = network_service(ssh_config)
+    res = network.get_ip_addr()
     return res
 
-@ssh_cmd_blueprint.route('/cmd/while', methods=['POST'])
-def execute_cmd_while(): 
+@network_blueprint.route('/ip/route', methods=['POST'])
+def get_route(): 
     """
-    循环ssh执行命令
+    查询主机的全部网络配置：网口名、ip、掩码、mac地址、网络接口状态
     -[x]hostname
     """
     hostname = request.form.get('hostname')
@@ -31,16 +31,14 @@ def execute_cmd_while():
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
-    count = request.form.get('count')
-    cmd = request.form.get('cmd')
-    ssh_cmd = ssh_cmd_service(ssh_config)
-    res = ssh_cmd.execute_cmd_while(count,cmd)
+    network = network_service(ssh_config)
+    res = network.get_route()
     return res
 
-@ssh_cmd_blueprint.route('/cmdContainer', methods=['POST'])
-def execute_cmd_container():
+@network_blueprint.route('/netstat/port', methods=['POST'])
+def get_netstat_port(): 
     """
-    在容器内执行命令
+    查询主机的全部网络配置：网口名、ip、掩码、mac地址、网络接口状态
     -[x]hostname
     """
     hostname = request.form.get('hostname')
@@ -48,8 +46,6 @@ def execute_cmd_container():
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
-    cmd = request.form.get('cmd')
-    container_id = request.form.get('container_id')
-    ssh_cmd = ssh_cmd_service(ssh_config)
-    res = ssh_cmd.execute_cmd_container(cmd,container_id)
+    network = network_service(ssh_config)
+    res = network.get_netstat_port()
     return res

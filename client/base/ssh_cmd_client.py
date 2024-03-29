@@ -54,6 +54,36 @@ class Client:
                 stdout_output = stdout.read().decode('utf-8')
                 stderr_output = stderr.read().decode('utf-8')
 
+            if exit_status != 0:
+                raise CommandExecutionError(
+                    "远程命令执行失败",
+                    exit_status=exit_status,
+                    stderr_output=stderr_output
+                )
+            else:
+                return stdout_output
+        except CommandExecutionError as e:
+            logging.error(f"命令执行出现错误: {e.message}")
+    
+    def execute_cmd_while(self,count,cmd):
+        """
+        循环执行ssh执行命令
+        """
+        cmd = "for i in {1..{}}; do {}; sleep 秒数; done".format(count,cmd)
+        base64_cmd = convert_str_base64(cmd)
+        execute_cmd = "sudo echo '{}' | base64 -d | bash".format(base64_cmd)
+        stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)
+        exit_status = stdout.channel.recv_exit_status()
+        stdout_output = stdout.read().decode('utf-8')
+        stderr_output = stderr.read().decode('utf-8')
+        try:
+            if "base: command not found" in stderr_output:
+                execute_cmd = "sudo echo '{}' | base64 -d | bash".format(cmd)
+                stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)
+                exit_status = stdout.channel.recv_exit_status()
+                stdout_output = stdout.read().decode('utf-8')
+                stderr_output = stderr.read().decode('utf-8')
+
             if stderr_output or exit_status != 0:
                 raise CommandExecutionError(
                     "远程命令执行失败",

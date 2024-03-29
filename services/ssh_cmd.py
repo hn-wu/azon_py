@@ -20,6 +20,14 @@ class Service(BaseService):
         res = self.ssh_client.execute_cmd(cmd=cmd)
         self.ssh_client.close_paramiko_client()
         return res
+    
+    def execute_cmd_while(self,count,cmd):
+        """
+        循环ssh执行命令
+        """
+        res = self.ssh_client.execute_cmd_while(count=count,cmd=cmd)
+        self.ssh_client.close_paramiko_client()
+        return res
 
     def execute_cmd_container(self,cmd,container_id):
         """
