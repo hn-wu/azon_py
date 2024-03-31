@@ -18,7 +18,7 @@ netstat -tulnp
 
 三、文件
 1. 模糊查询，指定文件下的全部文件名
-find /地址名 -name "*.txt" 2>/dev/null
+find /地址名 -name "*txt*" 2>/dev/null
 2. 查询指定文件中文本出现次数
 grep -o '查询单词' /文件名 | wc -l
 3. 将文件打包，并下载
@@ -33,6 +33,12 @@ ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-%mem
 五、用户相关
 1. 存储ssh主机配置
 2. ssh主机分组
+
+技术问题
+1. 异常处理
+2. 日志打印
+3. 不同结果响应码
+
 
 项目架构：
     前端：Vue

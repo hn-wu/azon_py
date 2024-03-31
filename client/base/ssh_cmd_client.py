@@ -54,16 +54,9 @@ class Client:
                 stdout_output = stdout.read().decode('utf-8')
                 stderr_output = stderr.read().decode('utf-8')
 
-            if exit_status != 0:
-                raise CommandExecutionError(
-                    "远程命令执行失败",
-                    exit_status=exit_status,
-                    stderr_output=stderr_output
-                )
-            else:
-                return stdout_output
+            return stdout_output
         except CommandExecutionError as e:
-            logging.error(f"命令执行出现错误: {e.message}")
+            logging.error(f"命令执行出现错误: {stderr_output}")
     
     def execute_cmd_while(self,count,cmd):
         """
@@ -93,7 +86,7 @@ class Client:
             else:
                 return stdout_output
         except CommandExecutionError as e:
-            logging.error(f"命令执行出现错误: {e.message}")
+            logging.error(f"命令执行出现错误: {stderr_output}")
 
     def execute_cmd_container(self,cmd,container_id):
         """

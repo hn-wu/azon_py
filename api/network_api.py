@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from services.network import Service as network_service
-from services.ssh_cmd import Service as ssh_cmd_service
 from services.user_config import Service as user_config_service
 
 network_blueprint = Blueprint('network', __name__)
