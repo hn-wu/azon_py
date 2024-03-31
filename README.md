@@ -24,7 +24,8 @@ grep -o '查询单词' /文件名 | wc -l
 3. 将文件打包，并下载
 
 四、进程
-1. 查询全部进程，pid、cpu占用、内存占用、启动cmd【ps -eo pid,%cpu,%mem,cmd,comm --no-headers】【支持按cpu占用、内存占用排序】
+1. 查询全部进程，PID、CPU 使用率、内存使用率、完整命令行和命令名【ps -eo pid,%cpu,%mem,cmd,comm --no-headers】
+【支持按cpu占用、内存占用排序】
 ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-pid
 ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-%cpu
 ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-%mem
