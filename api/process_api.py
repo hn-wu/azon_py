@@ -10,12 +10,13 @@ def get_all_process():
     查询全部进程，PID、CPU 使用率、内存使用率、完整命令行和命令名
     支持按cpu占用、内存占用排序
     """
-    hostname = request.form.get('hostname')
+    data = request.get_json()
+    hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
     network = process_service(ssh_config)
-    sort_key = request.form.get('sort_key',"pid")
+    sort_key = data.get('sort_key',"pid")
     res = network.get_all_process(sort_key)
     return res

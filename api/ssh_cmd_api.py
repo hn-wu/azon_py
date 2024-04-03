@@ -10,12 +10,13 @@ def execute_cmd():
     ssh执行命令
     -[x]hostname
     """
-    hostname = request.form.get('hostname')
+    data = request.get_json()
+    hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
-    cmd = request.form.get('cmd')
+    cmd = data.get('cmd')
     ssh_cmd = ssh_cmd_service(ssh_config)
     res = ssh_cmd.execute_cmd(cmd)
     return res
@@ -26,13 +27,14 @@ def execute_cmd_while():
     循环ssh执行命令
     -[x]hostname
     """
-    hostname = request.form.get('hostname')
+    data = request.get_json()
+    hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
-    count = request.form.get('count')
-    cmd = request.form.get('cmd')
+    count = data.get('count')
+    cmd = data.get('cmd')
     ssh_cmd = ssh_cmd_service(ssh_config)
     res = ssh_cmd.execute_cmd_while(count,cmd)
     return res
@@ -43,13 +45,13 @@ def execute_cmd_container():
     在容器内执行命令
     -[x]hostname
     """
-    hostname = request.form.get('hostname')
+    hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
     ssh_config = user_config.get_ssh_config_by_hostname()[0]
 
-    cmd = request.form.get('cmd')
-    container_id = request.form.get('container_id')
+    cmd = data.get('cmd')
+    container_id = data.get('container_id')
     ssh_cmd = ssh_cmd_service(ssh_config)
     res = ssh_cmd.execute_cmd_container(cmd,container_id)
     return res

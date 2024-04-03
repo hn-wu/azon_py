@@ -30,7 +30,6 @@ ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-pid
 ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-%cpu
 ps -eo pid,%cpu,%mem,cmd,comm --no-headers --sort=-%mem
 
-
 五、用户相关
 1. 存储ssh主机配置
 2. ssh主机分组

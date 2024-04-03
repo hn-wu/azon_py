@@ -12,10 +12,11 @@ def set_ssh_config():
     -[x]username
     -[x]password
     """
-    hostname = request.form.get('hostname')
-    port = request.form.get('port')
-    username = request.form.get('username')
-    password = request.form.get('password')
+    data = request.get_json()
+    hostname = data.get('hostname')
+    port = data.get('port')
+    username = data.get('username')
+    password = data.get('password')
     config = dict(hostname=hostname,port=port,
                   username=username,password=password,
                   dbname="userconfig")
@@ -30,7 +31,8 @@ def get_ssh_config_by_hostname():
     config[dict]
         -[x]hostname
     """
-    hostname = request.form.get('hostname')
+    data = request.get_json()
+    hostname = data.get('hostname')
     config = dict(hostname=hostname,
                   dbname="userconfig")
     user_config = user_config_service(config)
