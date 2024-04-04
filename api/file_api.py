@@ -23,6 +23,24 @@ def find_file_by_name():
     res = file.find_file_by_name(addr,filename)
     return res
 
+@file_blueprint.route('/show', methods=['POST'])
+def show_file(): 
+    """
+    查询指定文件中文本出现次数
+    -[x]word 查询单词
+    -[x]addr 查询文件地址
+    """
+    data = request.get_json()
+    hostname = data.get('hostname')
+    config = dict(hostname=hostname,dbname="userconfig")
+    user_config = user_config_service(config)
+    ssh_config = user_config.get_ssh_config_by_hostname()[0]
+
+    file = file_service(ssh_config)
+    addr = data.get('addr')
+    res = file.show_file(addr)
+    return res
+
 @file_blueprint.route('/count/word', methods=['POST'])
 def find_file_word_count(): 
     """

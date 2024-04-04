@@ -28,6 +28,13 @@ class Service(BaseService):
         file_name = res.split("\n")
         return file_name[0:-1]
     
+    def show_file(self,addr):
+        """
+        显示文件
+        """
+        res = self.file_client.show_file(addr)
+        return res
+    
     def find_file_word_count(self,word,addr):
         """
         查询指定文件中文本出现次数

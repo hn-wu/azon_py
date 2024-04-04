@@ -21,6 +21,15 @@ class Client(BaseClient):
         res = self.ssh_client.execute_cmd(cmd)
         self.ssh_client.close_paramiko_client()
         return res
+    
+    def show_file(self,addr):
+        """
+        显示文件
+        """
+        cmd = "cat {}".format(addr)
+        res = self.ssh_client.execute_cmd(cmd)
+        self.ssh_client.close_paramiko_client()
+        return res
 
     def find_file_word_count(self,word,addr):
         """
