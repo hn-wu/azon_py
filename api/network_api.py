@@ -26,6 +26,7 @@ def get_route():
     查询主机的全部网络配置：网口名、ip、掩码、mac地址、网络接口状态
     -[x]hostname
     """
+    data = request.get_json()
     hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)
@@ -41,6 +42,7 @@ def get_netstat_port():
     查询主机的全部网络配置：网口名、ip、掩码、mac地址、网络接口状态
     -[x]hostname
     """
+    data = request.get_json()
     hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)

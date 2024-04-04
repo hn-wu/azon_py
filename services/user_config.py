@@ -25,3 +25,7 @@ class Service(BaseService):
     def get_ssh_config_by_hostname(self):
         ssh_config = self.user_config_client.get_ssh_config_by_hostname()
         return ssh_config
+    
+    def get_ssh_config_all(self):
+        ssh_config_arr = self.user_config_client.get_ssh_config_all()
+        return ssh_config_arr

@@ -30,6 +30,7 @@ def find_file_word_count():
     -[x]word 查询单词
     -[x]addr 查询文件地址
     """
+    data = request.get_json()
     hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)

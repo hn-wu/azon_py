@@ -39,6 +39,13 @@ class Client:
         """
         self.db_client.insert(record_arr)
     
+    def search_all(self):
+        """
+        获得全部数据
+        """
+        results = self.db_client.all()
+        return results
+    
     def search_eq_db(self,query_conditions):
         """
         根据条件等值查询db

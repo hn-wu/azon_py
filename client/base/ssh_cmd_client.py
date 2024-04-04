@@ -62,7 +62,7 @@ class Client:
         """
         循环执行ssh执行命令
         """
-        cmd = "for i in {1..{}}; do {}; sleep 秒数; done".format(count,cmd)
+        cmd = "for i in {{1..{}}}; do {}; sleep 1; done".format(count,cmd)
         base64_cmd = convert_str_base64(cmd)
         execute_cmd = "sudo echo '{}' | base64 -d | bash".format(base64_cmd)
         stdin, stdout, stderr = self.paramiko_client.exec_command(command=execute_cmd)

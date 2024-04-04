@@ -26,6 +26,7 @@ def execute_cmd_while():
     """
     循环ssh执行命令
     -[x]hostname
+    TODO补充响应码，显示对应结果
     """
     data = request.get_json()
     hostname = data.get('hostname')
@@ -45,6 +46,7 @@ def execute_cmd_container():
     在容器内执行命令
     -[x]hostname
     """
+    data = request.get_json()
     hostname = data.get('hostname')
     config = dict(hostname=hostname,dbname="userconfig")
     user_config = user_config_service(config)

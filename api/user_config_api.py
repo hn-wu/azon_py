@@ -38,3 +38,13 @@ def get_ssh_config_by_hostname():
     user_config = user_config_service(config)
     res = user_config.get_ssh_config_by_hostname()
     return res
+
+@user_config_blueprint.route('/all', methods=['POST'])
+def get_ssh_config_all():
+    """
+    获得全部配置
+    """
+    config = dict(dbname="userconfig")
+    user_config = user_config_service(config)
+    res = user_config.get_ssh_config_all()
+    return res

@@ -25,3 +25,8 @@ class Client(BaseClient):
         ssh_config = self.db_client.search_eq_db(query_conditions)
         self.db_client.close_db()
         return ssh_config
+    
+    def get_ssh_config_all(self):
+        ssh_config = self.db_client.search_all()
+        self.db_client.close_db()
+        return ssh_config
